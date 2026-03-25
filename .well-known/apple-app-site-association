@@ -1,0 +1,26 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "XAGXTW3V95.com.yarivlevy.influancerwidgets",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
+```
+Click **"Commit changes"** ✅
+
+---
+
+## Step 2 — Create the `_headers` file
+
+Click **"+"** again → **"Create new file"** → name it exactly:
+```
+_headers
+```
+Paste this as content:
+```
+/.well-known/apple-app-site-association
+  Content-Type: application/json
