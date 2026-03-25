@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support – Creator Stats Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff; --bg2: #f7f7f7; --black: #0a0a0a;
+      --text: #1a1a1a; --muted: #6b6b6b; --border: #e8e8e8;
+      --accent: #0057ff; --accent-light: #eef3ff; --radius: 18px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; line-height: 1.7; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      height: 64px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { font-weight: 800; font-size: 1rem; color: var(--black); text-decoration: none; letter-spacing: -0.03em; display: flex; align-items: center; gap: 0.5rem; }
+    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
+    .nav-links a { font-size: 0.84rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); font-weight: 600; }
+
+    .page-hero { padding: 8rem 2.5rem 3rem; background: var(--bg2); border-bottom: 1px solid var(--border); text-align: center; }
+    .page-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--black); }
+    .page-sub { font-size: 1rem; color: var(--muted); margin-top: 0.75rem; }
+
+    .content { max-width: 860px; margin: 0 auto; padding: 4rem 2.5rem 6rem; }
+
+    /* contact card */
+    .contact-card {
+      background: var(--accent-light);
+      border: 1.5px solid #c5d8ff;
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .contact-card .icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .contact-card h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .contact-card p { font-size: 0.95rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .contact-card a.btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--black); color: white;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 600;
+      padding: 0.85rem 1.75rem; border-radius: 100px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .contact-card a.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+    /* faq */
+    .faq-title { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+
+    .faq-item {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+      background: white;
+    }
+
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      gap: 1rem;
+    }
+
+    .faq-q:hover { background: var(--bg2); }
+
+    .faq-arrow {
+      width: 20px; height: 20px; flex-shrink: 0;
+      border-radius: 50%; background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: var(--muted);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .faq-item.open .faq-arrow { transform: rotate(180deg); background: var(--border); }
+
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      font-size: 0.9rem; color: var(--muted); line-height: 1.75;
+      padding: 0 1.5rem;
+    }
+
+    .faq-item.open .faq-a { max-height: 400px; padding: 0 1.5rem 1.25rem; }
+
+    .faq-a a { color: var(--accent); text-decoration: none; }
+    .faq-a a:hover { text-decoration: underline; }
+
+    footer { background: var(--black); color: rgba(255,255,255,0.5); padding: 2.5rem 2.5rem; text-align: center; font-size: 0.82rem; }
+    footer a { color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 0.75rem; }
+    footer a:hover { color: white; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links li:not(:last-child) { display: none; }
+      .page-hero { padding: 7rem 1.25rem 2.5rem; }
+      .content { padding: 3rem 1.25rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo"><span class="logo-dot"></span>Creator Stats Widget</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="support.html" class="active">Support</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+    <li><a href="terms.html">Terms of Service</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="page-label">Support</div>
+  <h1>How can we help?</h1>
+  <p class="page-sub">Find answers to common questions, or reach out directly.</p>
+</div>
+
+<div class="content">
+
+  <div class="contact-card">
+    <span class="icon">✉️</span>
+    <h2>Contact Support</h2>
+    <p>Have a question or issue not covered below? Send us an email and we'll get back to you as soon as possible.</p>
+    <a href="mailto:yariv33@gmail.com" class="btn">✉️ yariv33@gmail.com</a>
+  </div>
+
+  <div class="faq-title">Frequently Asked Questions</div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      What is Creator Stats Widget?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      Creator Stats Widget is an iOS app that displays your social media statistics — such as follower counts and video views — directly on your iPhone home screen as a widget. It supports TikTok, Instagram, YouTube, and X.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      Which platforms are supported?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      The app currently supports TikTok, Instagram, YouTube, and X (formerly Twitter). We plan to add more platforms in future updates.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      Is my password safe?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      Yes. We never see or store your password. We use each platform's official OAuth login — the same secure method used by apps like Hootsuite and Buffer. You log in directly through the platform, and we only receive a secure access token to read your stats.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      How do I add the widget to my home screen?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      After connecting your accounts in the app: long-press on your iPhone home screen until the icons wiggle, tap the + button in the top-left corner, search for "Creator Stats Widget", choose your preferred widget size, and tap "Add Widget". Done!
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      How often do stats update?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      Stats refresh automatically throughout the day. iOS controls the exact refresh timing for home screen widgets to preserve battery life. You can also open the app to trigger a manual refresh.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      Can I disconnect an account?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      Yes. You can disconnect any connected platform at any time from within the app settings. This will remove the access token from your device and stop fetching data from that platform.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      What data does the app collect?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      We only collect what is necessary to show your stats: an access token from each connected platform (stored securely on your device) and your public account metrics. We do not sell your data. Read our full <a href="privacy.html">Privacy Policy</a> for details.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      The widget is not updating. What should I do?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      Try these steps: (1) Open the app and check that your account is still connected. (2) Remove the widget from your home screen and re-add it. (3) Restart your iPhone. (4) Check that the app has not been deleted. If the issue persists, contact us at <a href="mailto:yariv33@gmail.com">yariv33@gmail.com</a>.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">
+      How do I request a refund?
+      <span class="faq-arrow">▾</span>
+    </div>
+    <div class="faq-a">
+      All purchases are processed by Apple. To request a refund, visit <a href="https://reportaproblem.apple.com" target="_blank">reportaproblem.apple.com</a> and follow Apple's refund process.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:1rem;">
+    <a href="/">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="support.html">Support</a>
+  </div>
+  <div>© 2026 Creator Stats Widget · yariv33@gmail.com</div>
+</footer>
+
+<script>
+  function toggle(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
