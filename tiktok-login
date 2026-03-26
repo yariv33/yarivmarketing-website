@@ -1,29 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Connecting to App...</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Connecting...</title>
     <script>
         window.onload = function() {
-            // This captures the current URL with the TikTok 'code'
-            var tiktokUrl = window.location.href;
+            // Re-trigger the exact URL TikTok gave us
+            // This is the most "elegant" way to trigger the AppDelegate
+            window.location.replace(window.location.href);
             
-            // This forces the "Universal Link" handshake again
-            window.location.replace(tiktokUrl);
-
-            // Safety net: Show a button if it doesn't jump automatically
+            // If it doesn't jump in 1 second, reload once to be sure
             setTimeout(function() {
-                document.getElementById('manual').style.display = 'block';
+                window.location.reload();
             }, 1000);
         };
     </script>
-    <style>
-        body { font-family: -apple-system, sans-serif; text-align: center; padding-top: 100px; }
-        .btn { display: none; padding: 15px 30px; background: #000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; }
-    </style>
 </head>
-<body>
-    <p>Redirecting to your app...</p>
-    <a id="manual" href="javascript:location.reload()" class="btn">Click to Finish Login</a>
+<body style="font-family: -apple-system; text-align: center; padding-top: 50px;">
+    <h3>Finalizing Login...</h3>
 </body>
 </html>
