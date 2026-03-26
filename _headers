@@ -2,3 +2,5 @@
   Content-Type: application/json
 
 
+/tiktok-login
+  Content-Type: text/html
