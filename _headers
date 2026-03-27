@@ -3,3 +3,7 @@
 
 /callback
   Content-Type: text/html
+
+
+/terms/*
+  Content-Type: text/plain
