@@ -7,4 +7,6 @@
   },
   "assets": {
     "directory": ".",
-    "not_found_
+    "not_found_handling": "single-page-application"
+  }
+}
