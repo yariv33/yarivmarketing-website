@@ -6,9 +6,5 @@
     "enabled": true
   },
   "assets": {
-    "directory": "."
-  },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ]
-}
+    "directory": ".",
+    "not_found_
