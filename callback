@@ -5,10 +5,6 @@
 </head>
 <body>
   <script>
-    // TikTok sends back a URL like:
-    // https://yarivmarketing.com/callback?code=...&state=...
-    // iOS Universal Links intercepts this and hands it to the TikTok SDK.
-    // We just need to load this page — iOS does the rest automatically.
     window.location.replace(window.location.href);
   </script>
   <p>Redirecting back to app...</p>
