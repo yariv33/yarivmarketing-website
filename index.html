@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="canonical" href="https://yarivmarketing.com/" />
+  <link rel="canonical" href="https://yarivmarketing.com/" />
   <title>Creator Stats Widget – Your Stats on Your Home Screen</title>
   <meta name="description" content="Track your TikTok, Instagram, YouTube, and X stats directly on your iPhone home screen. No app switching. Always visible." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -157,46 +157,113 @@
       padding: 0.35rem 0.85rem;
       border: 1.5px solid var(--border); border-radius: 100px;
       background: white;
+      display: inline-flex; align-items: center; gap: 0.4rem;
     }
 
-    /* ── MOCKUP ── */
+    .platform-pill svg { flex-shrink: 0; }
+
+    /* ── IPHONE 17 PRO MAX MOCKUP ── */
     .mockup-wrap {
       padding: 1.5rem 2.5rem 5rem;
       display: flex; justify-content: center;
       animation: fadeUp 0.6s ease 0.4s both;
     }
 
-    .phone {
-      width: 300px;
-      background: #1c1c1e;
-      border-radius: 46px;
-      padding: 1.5rem;
-      box-shadow: 0 0 0 8px #2c2c2e, 0 40px 80px rgba(0,0,0,0.22);
+    .iphone-frame {
+      width: 280px;
+      position: relative;
+      background: linear-gradient(145deg, #4a4a4c, #3a3a3c, #2c2c2e);
+      border-radius: 52px;
+      padding: 10px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        0 0 0 1.5px #1c1c1e,
+        0 0 0 3px linear-gradient(145deg, #78787a, #5a5a5c),
+        0 0 0 3px #6a6a6c,
+        0 30px 60px rgba(0,0,0,0.35),
+        0 60px 120px rgba(0,0,0,0.15);
     }
 
-    .phone-notch {
-      width: 90px; height: 24px;
-      background: #2c2c2e; border-radius: 100px;
-      margin: 0 auto 1.25rem;
+    /* Titanium side frame effect */
+    .iphone-frame::before {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: 55px;
+      background: linear-gradient(145deg, #8e8e93, #636366, #48484a, #636366, #8e8e93);
+      z-index: -1;
     }
 
-    .phone-screen {
-      background: #000; border-radius: 30px;
-      padding: 1rem;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem;
+    /* Power button */
+    .iphone-frame::after {
+      content: '';
+      position: absolute;
+      right: -4px; top: 140px;
+      width: 4px; height: 60px;
+      background: linear-gradient(180deg, #78787a, #5a5a5c, #78787a);
+      border-radius: 0 3px 3px 0;
     }
 
-    .wc {
-      background: #1c1c1e; border-radius: 18px; padding: 0.9rem;
+    .iphone-buttons {
+      position: absolute;
+      left: -4px; top: 120px;
+      width: 4px; height: 36px;
+      background: linear-gradient(180deg, #78787a, #5a5a5c, #78787a);
+      border-radius: 3px 0 0 3px;
     }
 
-    .wc.wide { grid-column: span 2; display: flex; align-items: center; justify-content: space-between; }
+    .iphone-buttons::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 52px;
+      width: 4px; height: 36px;
+      background: linear-gradient(180deg, #78787a, #5a5a5c, #78787a);
+      border-radius: 3px 0 0 3px;
+    }
 
-    .wp { font-size: 0.5rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.25rem; }
-    .wn { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: white; }
-    .wl { font-size: 0.5rem; color: rgba(255,255,255,0.3); margin-top: 0.15rem; }
-    .wch { font-size: 0.55rem; font-weight: 600; color: #34c759; margin-top: 0.35rem; }
-    .wi { font-size: 1.2rem; opacity: 0.7; }
+    /* Dynamic Island */
+    .iphone-dynamic-island {
+      position: absolute;
+      top: 20px; left: 50%; transform: translateX(-50%);
+      width: 92px; height: 28px;
+      background: #000;
+      border-radius: 100px;
+      z-index: 3;
+    }
+
+    .iphone-screen {
+      background: #000;
+      border-radius: 44px;
+      overflow: hidden;
+      aspect-ratio: 9 / 19.5;
+      position: relative;
+    }
+
+    .iphone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Home indicator */
+    .iphone-home-bar {
+      position: absolute;
+      bottom: 18px; left: 50%; transform: translateX(-50%);
+      width: 110px; height: 4px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 100px;
+      z-index: 3;
+    }
+
+    /* Screen bezel glow */
+    .iphone-screen::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 44px;
+      box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.06);
+      z-index: 2;
+      pointer-events: none;
+    }
 
     /* ── FEATURES ── */
     .features { padding: 5rem 2.5rem; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -231,7 +298,7 @@
     }
 
     .plat-card:hover { border-color: #ccc; transform: translateY(-3px); }
-    .plat-logo { font-size: 1.75rem; margin-bottom: 0.75rem; display: block; }
+    .plat-logo { margin-bottom: 0.75rem; display: block; height: 36px; }
     .plat-card h3 { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
     .plat-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
 
@@ -278,6 +345,9 @@
       .hero, .features, .plat-section, .how-section, .cta-section { padding-left: 1.25rem; padding-right: 1.25rem; }
       .mockup-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
       footer { padding: 2.5rem 1.25rem; }
+      .iphone-frame { width: 230px; border-radius: 44px; }
+      .iphone-screen { border-radius: 36px; }
+      .iphone-dynamic-island { width: 76px; height: 24px; top: 17px; }
     }
   </style>
 </head>
@@ -310,51 +380,35 @@
       <a href="#how-it-works" class="btn-secondary">How it works ↓</a>
     </div>
     <div class="platforms-row">
-      <span class="platform-pill">🎵 TikTok</span>
-      <span class="platform-pill">📸 Instagram</span>
-      <span class="platform-pill">▶️ YouTube</span>
-      <span class="platform-pill">𝕏 X</span>
+      <span class="platform-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.07 2.52 5.7 5.7 5.7 3.27 0 5.68-2.6 5.68-5.7V8.73a7.6 7.6 0 0 0 4.44 1.42V7.1s-2.04.1-3.38-1.28z" fill="currentColor"/></svg>
+        TikTok
+      </span>
+      <span class="platform-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig" x1="0" y1="24" x2="24" y2="0"><stop offset="0%" stop-color="#feda75"/><stop offset="25%" stop-color="#fa7e1e"/><stop offset="50%" stop-color="#d62976"/><stop offset="75%" stop-color="#962fbf"/><stop offset="100%" stop-color="#4f5bd5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig)" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="5" stroke="url(#ig)" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.5" fill="url(#ig)"/></svg>
+        Instagram
+      </span>
+      <span class="platform-pill">
+        <svg width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="10" width="44" height="28" rx="8" fill="#FF0000"/><polygon points="20,15 20,33 34,24" fill="#FFFFFF"/></svg>
+        YouTube
+      </span>
+      <span class="platform-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </span>
     </div>
   </div>
 </section>
 
+<!-- IPHONE 17 PRO MAX MOCKUP -->
 <div class="mockup-wrap">
-  <div class="phone">
-    <div class="phone-notch"></div>
-    <div class="phone-screen">
-      <div class="wc">
-        <div class="wp">TikTok</div>
-        <div class="wn">248K</div>
-        <div class="wl">Followers</div>
-        <div class="wch">↑ +1.2K today</div>
-      </div>
-      <div class="wc">
-        <div class="wp">Instagram</div>
-        <div class="wn">91K</div>
-        <div class="wl">Followers</div>
-        <div class="wch">↑ +340 today</div>
-      </div>
-      <div class="wc">
-        <div class="wp">YouTube</div>
-        <div class="wn">1.4M</div>
-        <div class="wl">Views</div>
-        <div class="wch">↑ +8.9K today</div>
-      </div>
-      <div class="wc">
-        <div class="wp">X</div>
-        <div class="wn">33K</div>
-        <div class="wl">Followers</div>
-        <div class="wch">↑ +210 today</div>
-      </div>
-      <div class="wc wide">
-        <div>
-          <div class="wp">TikTok · Last 7 days</div>
-          <div class="wn">2.1M</div>
-          <div class="wl">Total Views</div>
-        </div>
-        <div class="wi">🎵</div>
-      </div>
+  <div class="iphone-frame">
+    <div class="iphone-buttons"></div>
+    <div class="iphone-dynamic-island"></div>
+    <div class="iphone-screen">
+      <img src="data:image/webp;base64,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" alt="Creator Stats Widget app - Connect Your Platforms screen" />
     </div>
+    <div class="iphone-home-bar"></div>
   </div>
 </div>
 
@@ -377,10 +431,34 @@
   <div class="section-label">Supported Platforms</div>
   <h2>All your channels.<br><span>One widget.</span></h2>
   <div class="plat-grid">
-    <div class="plat-card"><span class="plat-logo">🎵</span><h3>TikTok</h3><p>Track followers, video views, likes, and profile activity from your TikTok account.</p></div>
-    <div class="plat-card"><span class="plat-logo">📸</span><h3>Instagram</h3><p>Monitor your Instagram followers and engagement directly from your home screen.</p></div>
-    <div class="plat-card"><span class="plat-logo">▶️</span><h3>YouTube</h3><p>Keep an eye on your subscriber count, total views, and channel growth over time.</p></div>
-    <div class="plat-card"><span class="plat-logo">𝕏</span><h3>X (Twitter)</h3><p>Stay on top of your follower count and account activity on X, always up to date.</p></div>
+    <div class="plat-card">
+      <span class="plat-logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.07 2.52 5.7 5.7 5.7 3.27 0 5.68-2.6 5.68-5.7V8.73a7.6 7.6 0 0 0 4.44 1.42V7.1s-2.04.1-3.38-1.28z" fill="#000000"/></svg>
+      </span>
+      <h3>TikTok</h3>
+      <p>Track followers, video views, likes, and profile activity from your TikTok account.</p>
+    </div>
+    <div class="plat-card">
+      <span class="plat-logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig2" x1="0" y1="24" x2="24" y2="0"><stop offset="0%" stop-color="#feda75"/><stop offset="25%" stop-color="#fa7e1e"/><stop offset="50%" stop-color="#d62976"/><stop offset="75%" stop-color="#962fbf"/><stop offset="100%" stop-color="#4f5bd5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig2)" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="5" stroke="url(#ig2)" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.5" fill="url(#ig2)"/></svg>
+      </span>
+      <h3>Instagram</h3>
+      <p>Monitor your Instagram followers and engagement directly from your home screen.</p>
+    </div>
+    <div class="plat-card">
+      <span class="plat-logo">
+        <svg width="36" height="36" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.4-1.9.5-5.8.5-5.8s0-3.9-.5-5.8z" fill="#FF0000"/><path d="M9.6 15.6V8.4l6.3 3.6-6.3 3.6z" fill="#fff"/></svg>
+      </span>
+      <h3>YouTube</h3>
+      <p>Keep an eye on your subscriber count, total views, and channel growth over time.</p>
+    </div>
+    <div class="plat-card">
+      <span class="plat-logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </span>
+      <h3>X (Twitter)</h3>
+      <p>Stay on top of your follower count and account activity on X, always up to date.</p>
+    </div>
   </div>
 </section>
 
@@ -424,15 +502,8 @@
       <div class="footer-col">
         <div class="footer-col-title">Support</div>
         <a href="support.html">Help & Support</a>
-        <a href="mailto:yariv33@gmail.com">yariv33@gmail.com</a>
+        <a href="/cdn-cgi/l/email-protection#136a72617a65202053747e727a7f3d707c7e"><span class="__cf_email__" data-cfemail="8cf5edfee5fabfbfccebe1ede5e0a2efe3e1">[email&#160;protected]</span></a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Creator Stats Widget. All rights reserved.</span>
-      <span>yarivmarketing.com</span>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
+      <span>© 2026 Cre
