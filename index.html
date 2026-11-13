@@ -1,509 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="canonical" href="https://yarivmarketing.com/" />
-  <title>Creator Stats Widget – Your Stats on Your Home Screen</title>
-  <meta name="description" content="Track your TikTok, Instagram, YouTube, and X stats directly on your iPhone home screen. No app switching. Always visible." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #ffffff;
-      --bg2: #f7f7f7;
-      --black: #0a0a0a;
-      --text: #1a1a1a;
-      --muted: #6b6b6b;
-      --border: #e8e8e8;
-      --accent: #0057ff;
-      --accent-light: #eef3ff;
-      --radius: 18px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      height: 64px;
-      padding: 0 2.5rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-
-    .logo {
-      font-weight: 800; font-size: 1rem;
-      color: var(--black); text-decoration: none;
-      letter-spacing: -0.03em;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-
-    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-
-    .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
-
-    .nav-links a {
-      font-size: 0.84rem; font-weight: 500;
-      color: var(--muted); text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--black); }
-
-    .nav-cta {
-      background: var(--black) !important;
-      color: white !important;
-      padding: 0.5rem 1.2rem;
-      border-radius: 100px;
-      font-size: 0.82rem !important;
-      font-weight: 600 !important;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      padding: 10rem 2.5rem 5rem;
-      text-align: center;
-      position: relative; overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 55% at 50% -10%, #deeaff 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--accent-light); color: var(--accent);
-      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em;
-      padding: 0.4rem 1rem; border-radius: 100px;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.6s ease both;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 6vw, 5rem);
-      font-weight: 800; letter-spacing: -0.04em; line-height: 1.08;
-      color: var(--black);
-      animation: fadeUp 0.6s ease 0.08s both;
-    }
-
-    h1 em { font-style: normal; color: var(--accent); }
-
-    .hero-sub {
-      margin-top: 1.5rem;
-      font-size: 1.1rem; color: var(--muted);
-      max-width: 520px; margin-left: auto; margin-right: auto;
-      line-height: 1.75; font-weight: 400;
-      animation: fadeUp 0.6s ease 0.16s both;
-    }
-
-    .hero-actions {
-      margin-top: 2.5rem;
-      display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;
-      animation: fadeUp 0.6s ease 0.24s both;
-    }
-
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--black); color: white;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.9rem; font-weight: 600;
-      padding: 0.85rem 1.75rem; border-radius: 100px;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: transparent; color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.9rem; font-weight: 500;
-      padding: 0.85rem 1.75rem; border-radius: 100px;
-      border: 1.5px solid var(--border); text-decoration: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .btn-secondary:hover { border-color: #bbb; background: var(--bg2); }
-
-    .platforms-row {
-      margin-top: 3rem;
-      display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap;
-      animation: fadeUp 0.6s ease 0.32s both;
-    }
-
-    .platform-pill {
-      font-size: 0.8rem; font-weight: 500; color: var(--muted);
-      padding: 0.35rem 0.85rem;
-      border: 1.5px solid var(--border); border-radius: 100px;
-      background: white;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-
-    .platform-pill svg { flex-shrink: 0; }
-
-    /* ── IPHONE 17 PRO MAX MOCKUP ── */
-    .mockup-wrap {
-      padding: 1.5rem 2.5rem 5rem;
-      display: flex; justify-content: center;
-      animation: fadeUp 0.6s ease 0.4s both;
-    }
-
-    .iphone-frame {
-      width: 280px;
-      position: relative;
-      background: linear-gradient(145deg, #4a4a4c, #3a3a3c, #2c2c2e);
-      border-radius: 52px;
-      padding: 10px;
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.08),
-        0 0 0 1.5px #1c1c1e,
-        0 0 0 3px linear-gradient(145deg, #78787a, #5a5a5c),
-        0 0 0 3px #6a6a6c,
-        0 30px 60px rgba(0,0,0,0.35),
-        0 60px 120px rgba(0,0,0,0.15);
-    }
-
-    /* Titanium side frame effect */
-    .iphone-frame::before {
-      content: '';
-      position: absolute; inset: -3px;
-      border-radius: 55px;
-      background: linear-gradient(145deg, #8e8e93, #636366, #48484a, #636366, #8e8e93);
-      z-index: -1;
-    }
-
-    /* Power button */
-    .iphone-frame::after {
-      content: '';
-      position: absolute;
-      right: -4px; top: 140px;
-      width: 4px; height: 60px;
-      background: linear-gradient(180deg, #78787a, #5a5a5c, #78787a);
-      border-radius: 0 3px 3px 0;
-    }
-
-    .iphone-buttons {
-      position: absolute;
-      left: -4px; top: 120px;
-      width: 4px; height: 36px;
-      background: linear-gradient(180deg, #78787a, #5a5a5c, #78787a);
-      border-radius: 3px 0 0 3px;
-    }
-
-    .iphone-buttons::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 52px;
-      width: 4px; height: 36px;
-      background: linear-gradient(180deg, #78787a, #5a5a5c, #78787a);
-      border-radius: 3px 0 0 3px;
-    }
-
-    /* Dynamic Island */
-    .iphone-dynamic-island {
-      position: absolute;
-      top: 20px; left: 50%; transform: translateX(-50%);
-      width: 92px; height: 28px;
-      background: #000;
-      border-radius: 100px;
-      z-index: 3;
-    }
-
-    .iphone-screen {
-      background: #000;
-      border-radius: 44px;
-      overflow: hidden;
-      aspect-ratio: 9 / 19.5;
-      position: relative;
-    }
-
-    .iphone-screen img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* Home indicator */
-    .iphone-home-bar {
-      position: absolute;
-      bottom: 18px; left: 50%; transform: translateX(-50%);
-      width: 110px; height: 4px;
-      background: rgba(255,255,255,0.25);
-      border-radius: 100px;
-      z-index: 3;
-    }
-
-    /* Screen bezel glow */
-    .iphone-screen::before {
-      content: '';
-      position: absolute; inset: 0;
-      border-radius: 44px;
-      box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.06);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* ── FEATURES ── */
-    .features { padding: 5rem 2.5rem; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .features-inner { max-width: 1100px; margin: 0 auto; }
-
-    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
-
-    h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--black); max-width: 600px; }
-    h2 span { color: var(--muted); }
-
-    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; margin-top: 3.5rem; }
-
-    .feat-card {
-      background: white; border: 1.5px solid var(--border);
-      border-radius: var(--radius); padding: 2rem;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .feat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.07); }
-    .feat-icon { font-size: 1.75rem; margin-bottom: 1rem; display: block; }
-    .feat-card h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-    .feat-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── PLATFORMS ── */
-    .plat-section { padding: 5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
-    .plat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 3rem; }
-
-    .plat-card {
-      border: 1.5px solid var(--border); border-radius: var(--radius);
-      padding: 1.75rem; background: white;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .plat-card:hover { border-color: #ccc; transform: translateY(-3px); }
-    .plat-logo { margin-bottom: 0.75rem; display: block; height: 36px; }
-    .plat-card h3 { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
-    .plat-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
-
-    /* ── HOW IT WORKS ── */
-    .how-section { padding: 5rem 2.5rem; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .how-inner { max-width: 1100px; margin: 0 auto; }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 3.5rem; }
-
-    .step { display: flex; flex-direction: column; gap: 1rem; }
-    .step-num { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--black); color: white; font-size: 0.85rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-    .step h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; }
-    .step p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── CTA ── */
-    .cta-section { padding: 5rem 2.5rem; text-align: center; max-width: 680px; margin: 0 auto; }
-    .cta-section h2 { margin: 0 auto 1rem; }
-    .cta-section p { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; line-height: 1.7; }
-
-    /* ── FOOTER ── */
-    footer { background: var(--black); color: rgba(255,255,255,0.5); padding: 3rem 2.5rem; }
-    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
-
-    .footer-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
-
-    .footer-brand { font-weight: 800; font-size: 1rem; color: white; letter-spacing: -0.03em; display: flex; align-items: center; gap: 0.5rem; }
-    .footer-brand-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-    .footer-desc { font-size: 0.82rem; margin-top: 0.5rem; max-width: 250px; line-height: 1.6; }
-
-    .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
-    .footer-col-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 0.25rem; }
-    .footer-col a { font-size: 0.84rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
-    .footer-col a:hover { color: white; }
-
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-size: 0.78rem; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 0 1.25rem; }
-      .nav-links li:not(:last-child) { display: none; }
-      .hero, .features, .plat-section, .how-section, .cta-section { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .mockup-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
-      footer { padding: 2.5rem 1.25rem; }
-      .iphone-frame { width: 230px; border-radius: 44px; }
-      .iphone-screen { border-radius: 36px; }
-      .iphone-dynamic-island { width: 76px; height: 24px; top: 17px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yariv Global | פתרונות שילוח בינלאומי לעסקים</title>
+<meta name="description" content="מחפשים שילוח בינלאומי? Yariv Global מחברת יבואנים ויצואנים לפתרונות שילוח ימי, אווירי ויבשתי באמצעות שותפי שילוח. בקשו הצעת מחיר.">
+<meta name="theme-color" content="#071b33">
+<link rel="canonical" href="https://yarivmarketing.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#071b33;--navy2:#0d2948;--blue:#1267d6;--cyan:#42c5d9;--ink:#14243a;--muted:#65758b;--line:#e3eaf1;--soft:#f3f7fb;--white:#fff;--shadow:0 22px 60px rgba(8,32,58,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Heebo,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.65}a{color:inherit;text-decoration:none}.container{width:min(1160px,calc(100% - 44px));margin:auto}
+.topbar{background:#061426;color:#d5e4f5;font-size:13px}.topbar .container{display:flex;justify-content:space-between;gap:18px;padding:9px 0}.topbar a{color:#fff}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(220,230,240,.8)}.nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.2px;color:var(--navy);font-family:Manrope,Heebo,sans-serif;font-size:18px;direction:ltr}.brandmark{width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,var(--blue),var(--cyan));display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 7px 18px #1267d633}.links{display:flex;align-items:center;gap:27px;font-size:14px;font-weight:600;color:#4e6076}.links a:hover{color:var(--blue)}.nav-actions{display:flex;align-items:center;gap:10px}.lang{border:1px solid var(--line);background:#fff;padding:9px 13px;border-radius:10px;font-weight:700;cursor:pointer;color:var(--navy)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 21px;border-radius:11px;font-weight:800;border:0;cursor:pointer;transition:.2s;font-family:inherit}.btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 22px #1267d62e}.btn-primary:hover{background:#0757bd;transform:translateY(-2px)}.btn-light{background:#fff;color:var(--navy)}.btn-outline{border:1px solid #cbd8e6;color:var(--navy);background:#fff}
+.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 12% 10%,#164b7a 0,transparent 42%),linear-gradient(115deg,#06172b 0%,#0b2949 58%,#0d4160 100%);color:#fff;padding:88px 0 78px}.hero:after{content:"";position:absolute;width:560px;height:560px;border:1px solid #ffffff18;border-radius:50%;left:-180px;top:-240px;box-shadow:0 0 0 65px #ffffff08,0 0 0 130px #ffffff05}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:58px;position:relative;z-index:1}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#9ceafa;font-weight:700;font-size:13px;letter-spacing:.4px}.eyebrow:before{content:"";width:25px;height:2px;background:var(--cyan)}h1{font-size:clamp(39px,5.2vw,64px);line-height:1.13;letter-spacing:-1.5px;margin:20px 0 20px;font-weight:900;max-width:680px}.hero p{font-size:18px;color:#d2e1ef;max-width:590px;margin:0 0 30px}.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}.trustline{display:flex;gap:20px;flex-wrap:wrap;margin-top:32px;color:#c2d5e7;font-size:13px}.trustline span{display:flex;align-items:center;gap:7px}.check{color:#69d9d0;font-weight:900}.visual{position:relative;min-height:380px}.visual img{width:100%;height:380px;object-fit:cover;border-radius:24px;opacity:.9;box-shadow:0 30px 70px #0006;border:1px solid #ffffff30}.floating-card{position:absolute;bottom:-22px;right:-25px;background:#fff;color:var(--navy);padding:18px 21px;border-radius:16px;box-shadow:var(--shadow);min-width:210px}.floating-card strong{display:block;font-size:15px}.floating-card small{color:var(--muted)}
+.quick{margin-top:-1px;background:#fff;position:relative;z-index:2;border-bottom:1px solid var(--line)}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);padding:24px 0}.quick-item{display:flex;align-items:center;gap:14px;padding:8px 25px;border-left:1px solid var(--line)}.quick-item:first-child{padding-right:0}.quick-item:last-child{border:0}.quick-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:13px;background:#eaf4ff;color:var(--blue);font-size:22px}.quick-item b{display:block;font-size:15px}.quick-item small{color:var(--muted)}
+section{scroll-margin-top:90px}.section{padding:86px 0}.section.soft{background:var(--soft)}.section-head{text-align:center;max-width:700px;margin:0 auto 42px}.kicker{color:var(--blue);font-size:13px;font-weight:900;letter-spacing:.8px}.section h2{font-size:clamp(29px,3.6vw,43px);line-height:1.2;color:var(--navy);margin:10px 0 13px;font-weight:900}.section-head p{color:var(--muted);font-size:16px;margin:0}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:19px}.service{background:#fff;border:1px solid var(--line);border-radius:18px;padding:27px;transition:.22s}.service:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:#c4d8ed}.service-icon{width:54px;height:54px;border-radius:15px;background:linear-gradient(145deg,#eaf4ff,#e5fbfb);display:grid;place-items:center;font-size:25px;margin-bottom:19px}.service h3{margin:0 0 8px;color:var(--navy);font-size:20px}.service p{margin:0;color:var(--muted);font-size:14px}.service a{display:inline-flex;margin-top:18px;color:var(--blue);font-weight:800;font-size:14px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}.split img{width:100%;height:390px;object-fit:cover;border-radius:22px;box-shadow:var(--shadow)}.split h2{font-size:clamp(30px,3.5vw,42px);line-height:1.2;margin:10px 0 17px;color:var(--navy)}.split p{color:var(--muted)}.bullets{display:grid;gap:13px;margin:24px 0}.bullet{display:flex;gap:12px;align-items:flex-start}.bullet i{font-style:normal;color:var(--blue);background:#eaf4ff;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;flex:none;font-weight:900}.bullet b{display:block;color:var(--navy)}.bullet small{color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.step{padding:24px;border:1px solid var(--line);border-radius:16px;background:#fff}.step-num{font-family:Manrope,sans-serif;color:var(--blue);font-size:13px;font-weight:900}.step h3{margin:10px 0 6px;color:var(--navy);font-size:18px}.step p{margin:0;color:var(--muted);font-size:14px}
+.lead-section{background:linear-gradient(120deg,#071b33,#0d3558);color:#fff;padding:82px 0}.lead-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:55px;align-items:start}.lead-copy h2{font-size:clamp(30px,3.8vw,44px);line-height:1.2;margin:10px 0 15px}.lead-copy p{color:#c9d9e8}.contact-points{display:grid;gap:13px;margin-top:27px;color:#dce9f4}.contact-points a{color:#fff;font-weight:700}.form{background:#fff;color:var(--ink);border-radius:20px;padding:29px;box-shadow:0 24px 65px #0003}.form h3{margin:0 0 5px;color:var(--navy);font-size:23px}.form .hint{color:var(--muted);font-size:13px;margin:0 0 20px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:800;color:#31445a}.field input,.field select,.field textarea{width:100%;border:1px solid #d9e2ec;border-radius:10px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);background:#fbfdff;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1267d615}.field textarea{min-height:88px;resize:vertical}.form .btn{width:100%;margin-top:15px}.form-note{font-size:11px;color:#8290a1;margin:10px 0 0}.status{font-size:13px;color:#1267a5;margin-top:10px;min-height:20px}
+.faq{max-width:820px;margin:auto}.faq details{border-bottom:1px solid var(--line);padding:18px 0}.faq summary{font-weight:800;color:var(--navy);cursor:pointer}.faq details p{color:var(--muted);margin:12px 0 0}
+footer{background:#041326;color:#c3d1df;padding:48px 0 22px}.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:35px;padding-bottom:34px}.footer-brand{color:#fff}.footer-grid p{color:#93a8bd;max-width:350px;font-size:14px}.footer-title{color:#fff;font-weight:800;margin-bottom:13px}.footer-links{display:grid;gap:9px;font-size:14px;color:#aabbd0}.footer-links a:hover{color:#fff}.copyright{border-top:1px solid #ffffff18;padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#8297ad;font-size:12px}
+.whatsapp{position:fixed;bottom:22px;left:22px;z-index:30;background:#20b86a;color:#fff;border-radius:50px;padding:13px 18px;font-weight:900;box-shadow:0 12px 30px #087c4545;display:flex;align-items:center;gap:8px}
+[dir="ltr"] body{text-align:left}[dir="ltr"] .topbar .container,[dir="ltr"] .quick-item,[dir="ltr"] .footer-grid{text-align:left}[dir="ltr"] .quick-item{border-left:0;border-right:1px solid var(--line);padding-left:0;padding-right:25px}[dir="ltr"] .quick-item:last-child{border:0}[dir="ltr"] .floating-card{right:auto;left:-25px}[dir="ltr"] .whatsapp{left:auto;right:22px}
+@media(max-width:900px){.links{gap:14px}.hero-grid{gap:30px}.visual,.visual img{min-height:310px;height:310px}.services{grid-template-columns:repeat(2,1fr)}.split{gap:35px}.steps{grid-template-columns:repeat(2,1fr)}.lead-grid{gap:30px}}
+@media(max-width:680px){.container{width:min(100% - 32px,560px)}.topbar .container{justify-content:center}.topbar .container span:first-child{display:none}.nav{height:68px}.links{display:none}.hero{padding:62px 0 64px}.hero-grid,.split,.lead-grid{grid-template-columns:1fr}.hero-grid{gap:38px}h1{font-size:42px}.hero p{font-size:16px}.visual,.visual img{height:260px;min-height:260px}.floating-card{right:10px;bottom:-18px}.quick-grid{grid-template-columns:1fr;padding:10px 0}.quick-item,.quick-item:first-child{border:0;border-bottom:1px solid var(--line);padding:12px 0}.quick-item:last-child{border:0}.section{padding:64px 0}.services{grid-template-columns:1fr}.split img{height:270px}.steps{grid-template-columns:1fr 1fr;gap:10px}.step{padding:17px}.lead-section{padding:62px 0}.form{padding:21px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.footer-grid{grid-template-columns:1fr 1fr}.footer-grid>div:first-child{grid-column:1/-1}.copyright{display:grid}.whatsapp{bottom:14px;left:14px;padding:11px 14px;font-size:13px}[dir="ltr"] .whatsapp{right:14px;left:auto}}
+</style>
 </head>
 <body>
-
-<nav>
-  <a href="/" class="logo"><span class="logo-dot"></span>Creator Stats Widget</a>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#platforms">Platforms</a></li>
-    <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li><a href="privacy.html">Privacy Policy</a></li>
-    <li><a href="terms.html">Terms of Service</a></li>
-    <li><a href="support.html" class="nav-cta">Get the App</a></li>
-  </ul>
-</nav>
-
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">📱 iOS Widget App</div>
-    <h1>Your stats.<br><em>Always visible.</em></h1>
-    <p class="hero-sub">Creator Stats Widget shows your TikTok, Instagram, YouTube, and X numbers directly on your iPhone home screen — no app switching, no logging in every time.</p>
-    <div class="hero-actions">
-      <a href="support.html" class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Coming Soon on App Store
-      </a>
-      <a href="#how-it-works" class="btn-secondary">How it works ↓</a>
-    </div>
-    <div class="platforms-row">
-      <span class="platform-pill">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.07 2.52 5.7 5.7 5.7 3.27 0 5.68-2.6 5.68-5.7V8.73a7.6 7.6 0 0 0 4.44 1.42V7.1s-2.04.1-3.38-1.28z" fill="currentColor"/></svg>
-        TikTok
-      </span>
-      <span class="platform-pill">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig" x1="0" y1="24" x2="24" y2="0"><stop offset="0%" stop-color="#feda75"/><stop offset="25%" stop-color="#fa7e1e"/><stop offset="50%" stop-color="#d62976"/><stop offset="75%" stop-color="#962fbf"/><stop offset="100%" stop-color="#4f5bd5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig)" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="5" stroke="url(#ig)" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.5" fill="url(#ig)"/></svg>
-        Instagram
-      </span>
-      <span class="platform-pill">
-        <svg width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="10" width="44" height="28" rx="8" fill="#FF0000"/><polygon points="20,15 20,33 34,24" fill="#FFFFFF"/></svg>
-        YouTube
-      </span>
-      <span class="platform-pill">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        X
-      </span>
-    </div>
-  </div>
-</section>
-
-<!-- IPHONE 17 PRO MAX MOCKUP -->
-<div class="mockup-wrap">
-  <div class="iphone-frame">
-    <div class="iphone-buttons"></div>
-    <div class="iphone-dynamic-island"></div>
-    <div class="iphone-screen">
-      <img src="data:image/webp;base64,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" alt="Creator Stats Widget app - Connect Your Platforms screen" />
-    </div>
-    <div class="iphone-home-bar"></div>
-  </div>
-</div>
-
-<section class="features" id="features">
-  <div class="features-inner">
-    <div class="section-label">Features</div>
-    <h2>Everything a creator needs.<br><span>Nothing they don't.</span></h2>
-    <div class="feat-grid">
-      <div class="feat-card"><span class="feat-icon">🏠</span><h3>Home Screen Widgets</h3><p>See your stats the moment you pick up your phone. Small, medium, and large widget sizes supported.</p></div>
-      <div class="feat-card"><span class="feat-icon">🔄</span><h3>Auto-Refresh</h3><p>Your numbers update automatically throughout the day. No manual refreshing needed.</p></div>
-      <div class="feat-card"><span class="feat-icon">📊</span><h3>Multi-Platform</h3><p>Connect TikTok, Instagram, YouTube, and X all in one app. All your stats in one place.</p></div>
-      <div class="feat-card"><span class="feat-icon">🔐</span><h3>Secure Login</h3><p>We use each platform's official OAuth login. Your credentials are never stored by us.</p></div>
-      <div class="feat-card"><span class="feat-icon">🎨</span><h3>Clean Design</h3><p>Minimal, beautiful widgets that look great on any wallpaper in both light and dark mode.</p></div>
-      <div class="feat-card"><span class="feat-icon">⚡️</span><h3>Fast & Lightweight</h3><p>Built natively for iOS. No unnecessary background processes or battery drain.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="plat-section" id="platforms">
-  <div class="section-label">Supported Platforms</div>
-  <h2>All your channels.<br><span>One widget.</span></h2>
-  <div class="plat-grid">
-    <div class="plat-card">
-      <span class="plat-logo">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.07 2.52 5.7 5.7 5.7 3.27 0 5.68-2.6 5.68-5.7V8.73a7.6 7.6 0 0 0 4.44 1.42V7.1s-2.04.1-3.38-1.28z" fill="#000000"/></svg>
-      </span>
-      <h3>TikTok</h3>
-      <p>Track followers, video views, likes, and profile activity from your TikTok account.</p>
-    </div>
-    <div class="plat-card">
-      <span class="plat-logo">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig2" x1="0" y1="24" x2="24" y2="0"><stop offset="0%" stop-color="#feda75"/><stop offset="25%" stop-color="#fa7e1e"/><stop offset="50%" stop-color="#d62976"/><stop offset="75%" stop-color="#962fbf"/><stop offset="100%" stop-color="#4f5bd5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig2)" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="5" stroke="url(#ig2)" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.5" fill="url(#ig2)"/></svg>
-      </span>
-      <h3>Instagram</h3>
-      <p>Monitor your Instagram followers and engagement directly from your home screen.</p>
-    </div>
-    <div class="plat-card">
-      <span class="plat-logo">
-        <svg width="36" height="36" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.4-1.9.5-5.8.5-5.8s0-3.9-.5-5.8z" fill="#FF0000"/><path d="M9.6 15.6V8.4l6.3 3.6-6.3 3.6z" fill="#fff"/></svg>
-      </span>
-      <h3>YouTube</h3>
-      <p>Keep an eye on your subscriber count, total views, and channel growth over time.</p>
-    </div>
-    <div class="plat-card">
-      <span class="plat-logo">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </span>
-      <h3>X (Twitter)</h3>
-      <p>Stay on top of your follower count and account activity on X, always up to date.</p>
-    </div>
-  </div>
-</section>
-
-<section class="how-section" id="how-it-works">
-  <div class="how-inner">
-    <div class="section-label">How It Works</div>
-    <h2>Up and running<br><span>in 3 steps.</span></h2>
-    <div class="steps">
-      <div class="step"><div class="step-num">1</div><h3>Download the App</h3><p>Get Creator Stats Widget from the App Store. It's a native iOS app built for iPhone and iPad.</p></div>
-      <div class="step"><div class="step-num">2</div><h3>Connect Your Accounts</h3><p>Log in securely to TikTok, Instagram, YouTube, and X using each platform's official login flow.</p></div>
-      <div class="step"><div class="step-num">3</div><h3>Add to Home Screen</h3><p>Long-press your home screen, tap +, find Creator Stats Widget, choose a size, and you're done.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section">
-  <div class="section-label">Get Started</div>
-  <h2>Ready to watch<br><span>your numbers grow?</span></h2>
-  <p>Creator Stats Widget is coming soon to the App Store. Get in touch to be notified at launch.</p>
-  <a href="support.html" class="btn-primary">Contact & Support</a>
-</section>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand"><span class="footer-brand-dot"></span>Creator Stats Widget</div>
-        <p class="footer-desc">A native iOS app for creators who want their stats always visible on their home screen.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">App</div>
-        <a href="#features">Features</a>
-        <a href="#platforms">Platforms</a>
-        <a href="#how-it-works">How It Works</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Legal</div>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Support</div>
-        <a href="support.html">Help & Support</a>
-        <a href="/cdn-cgi/l/email-protection#136a72617a65202053747e727a7f3d707c7e"><span class="__cf_email__" data-cfemail="8cf5edfee5fabfbfccebe1ede5e0a2efe3e1">[email&#160;protected]</span></a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Cre
+<div class="topbar"><div class="container"><span data-i18n="topline">פתרונות שילוח בינלאומי לעסקים, יבואנים ויצואנים</span><span><a href="mailto:yariv4934@gmail.com">yariv4934@gmail.com</a>　·　<span data-i18n="response">נשמח לחזור אליכם</span></span></div></div>
+<header><div class="container nav">
+<a class="brand" href="#" aria-label="Yariv Global home"><span class="brandmark">YG</span><span>YARIV GLOBAL</span></a>
+<nav class="links" aria-label="Main navigation"><a href="#services" data-i18n="navServices">השירותים שלנו</a><a href="#about" data-i18n="navAbout">למה לעבוד איתנו</a><a href="#process" data-i18n="navProcess">איך זה עובד</a><a href="#faq" data-i18n="navFaq">שאלות נפוצות</a></nav>
+<div class="nav-actions"><button class="lang" id="langToggle" type="button">EN</button><a class="btn btn-primary" href="#quote" data-i18n="navCta">קבלו הצעת מחיר</a></div>
+</div></header>
+<main>
+<section class="hero"><div class="container hero-grid">
+<div><div class="eyebrow" data-i18n="eyebrow">מחברים עסקים להזדמנויות בכל העולם</div>
+<h1 data-i18n="heroTitle">השילוח הבינלאומי שלכם,<br><span style="color:#55d5e4">בדרך הנכונה.</span></h1>
+<p data-i18n="heroText">צריכים להעביר סחורה מעבר לים? אנחנו מחברים יבואנים ויצואנים לפתרונות שילוח ימי, אווירי ויבשתי באמצעות שותפי שילוח מקצועיים — עם ליווי אישי לאורך הדרך.</p>
+<div class="hero-buttons"><a class="btn btn-primary" href="#quote" data-i18n="heroCta">בקשו הצעת מחיר <span>←</span></a><a class="btn btn-light" href="#services" data-i18n="heroSecondary">גלו את השירותים</a></div>
+<div class="trustline"><span><b class="check">✓</b><span data-i18n="trust1">מגוון פתרונות שילוח</span></span><span><b class="check">✓</b><span data-i18n="trust2">התאמה לצורכי העסק</span></span><span><b class="check">✓</b><span data-i18n="trust3">כתובת אחת לפנייה</span></span></div></div>
+<div class="visual"><img src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&w=1200&q=85" alt="מכולות מטען בנמל ימי בינלאומי"><div class="floating-card"><strong data-i18n="floatTitle">מהספק ועד היעד</strong><small data-i18n="floatText">מתחילים בתכנון שילוח שמתאים לכם</small></div></div>
+</div></section>
+<div class="quick"><div class="container quick-grid">
+<div class="quick-item"><div class="quick-icon">🚢</div><div><b data-i18n="quick1">שילוח ימי</b><small data-i18n="quick1s">מכולות ומטענים חלקיים</small></div></div>
+<div class="quick-item"><div class="quick-icon">✈️</div><div><b data-i18n="quick2">שילוח אווירי</b><small data-i18n="quick2s">למטענים הזקוקים למהירות</small></div></div>
+<div class="quick-item"><div class="quick-icon">🚛</div><div><b data-i18n="quick3">שילוח יבשתי</b><small data-i18n="quick3s">פתרונות הובלה יבשתית</small></div></div>
+</div></div>
+<section class="section" id="services"><div class="container"><div class="section-head"><div class="kicker" data-i18n="servicesKicker">פתרונות שילוח</div><h2 data-i18n="servicesTitle">כל אפשרויות השילוח, במקום אחד</h2><p data-i18n="servicesText">נבחן את סוג המטען, לוחות הזמנים והיעד ונחבר אתכם לפתרון מתאים דרך שותפי השילוח שלנו.</p></div>
+<div class="services">
+<article class="service"><div class="service-icon">🚢</div><h3 data-i18n="seaTitle">שילוח ימי</h3><p data-i18n="seaText">פתרונות למכולות מלאות (FCL) ולמטענים חלקיים (LCL), בהתאם לסוג הסחורה ולמסלול.</p><a href="#quote" data-i18n="learn">לקבלת הצעה ←</a></article>
+<article class="service"><div class="service-icon">✈️</div><h3 data-i18n="airTitle">שילוח אווירי</h3><p data-i18n="airText">אפשרויות שילוח אווירי למשלוחים דחופים, רגישים או בעלי ערך, בהתאם לזמינות ולתנאי המוביל.</p><a href="#quote" data-i18n="learn">לקבלת הצעה ←</a></article>
+<article class="service"><div class="service-icon">🚛</div><h3 data-i18n="roadTitle">שילוח יבשתי</h3><p data-i18n="roadText">פתרונות הובלה יבשתית ומשולבת בין מדינות, בכפוף לתשתיות ולשותפים הזמינים במסלול.</p><a href="#quote" data-i18n="learn">לקבלת הצעה ←</a></article>
+<article class="service"><div class="service-icon">🌍</div><h3 data-i18n="importTitle">שירותי יבוא ויצוא</h3><p data-i18n="importText">סיוע בתיאום פתרונות שילוח לתנועת סחורות לישראל וממנה, לפי צורכי העסק.</p><a href="#quote" data-i18n="learn">לקבלת הצעה ←</a></article>
+<article class="service"><div class="service-icon">📦</div><h3 data-i18n="doorTitle">שילוח מדלת לדלת</h3><p data-i18n="doorText">בדיקת אפשרויות לאיסוף, הובלה ומסירה ביעד באמצעות ספקים מתאימים.</p><a href="#quote" data-i18n="learn">לקבלת הצעה ←</a></article>
+<article class="service"><div class="service-icon">🧭</div><h3 data-i18n="customTitle">פתרון לפי הצורך</h3><p data-i18n="customText">לא בטוחים מה מתאים? שתפו אותנו בפרטי המשלוח ונעזור לבדוק את האפשרויות.</p><a href="#quote" data-i18n="learn">לקבלת הצעה ←</a></article>
+</div></div></section>
+<section class="section soft" id="about"><div class="container split">
+<img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=85" alt="מרכז לוגיסטי ומטענים לקראת שילוח בינלאומי">
+<div><div class="kicker" data-i18n="aboutKicker">הגישה שלנו</div><h2 data-i18n="aboutTitle">שילוח מתחיל בהבנה של העסק שלכם</h2><p data-i18n="aboutText">אנחנו פועלים כגורם מקשר בין עסקים לבין שותפי שילוח בינלאומיים. המטרה היא להבין את הצורך, לאסוף את פרטי המשלוח ולסייע בקבלת הצעה רלוונטית מספק מתאים.</p>
+<div class="bullets"><div class="bullet"><i>✓</i><div><b data-i18n="b1">התאמה למסלול ולמטען</b><small data-i18n="b1s">בחינת סוג הסחורה, נפח, משקל, מוצא ויעד.</small></div></div><div class="bullet"><i>✓</i><div><b data-i18n="b2">תיאום מול שותפי שילוח</b><small data-i18n="b2s">חיבור לגורמים רלוונטיים לפי פרטי הבקשה.</small></div></div><div class="bullet"><i>✓</i><div><b data-i18n="b3">ליווי אישי בפנייה</b><small data-i18n="b3s">איש קשר אחד שמרכז את הבקשה ומסייע בהמשך התהליך.</small></div></div></div>
+<a class="btn btn-primary" href="#quote" data-i18n="aboutCta">נתחיל לתכנן את המשלוח</a></div>
+</div></section>
+<section class="section" id="process"><div class="container"><div class="section-head"><div class="kicker" data-i18n="processKicker">פשוט להתחיל</div><h2 data-i18n="processTitle">כך זה עובד</h2><p data-i18n="processText">ארבעה שלבים קצרים בדרך לבדיקת אפשרויות השילוח.</p></div>
+<div class="steps"><article class="step"><div class="step-num">STEP 01</div><h3 data-i18n="step1">משאירים פרטים</h3><p data-i18n="step1s">ממלאים טופס עם מוצא, יעד ופרטי המטען.</p></article><article class="step"><div class="step-num">STEP 02</div><h3 data-i18n="step2">בודקים את הצורך</h3><p data-i18n="step2s">נחזור אליכם להשלמת פרטים במידת הצורך.</p></article><article class="step"><div class="step-num">STEP 03</div><h3 data-i18n="step3">מחברים לשותף מתאים</h3><p data-i18n="step3s">הבקשה מועברת לבדיקת שותף שילוח רלוונטי.</p></article><article class="step"><div class="step-num">STEP 04</div><h3 data-i18n="step4">מקבלים הצעה</h3><p data-i18n="step4s">הצעת המחיר ותנאי השירות יימסרו על ידי ספק השילוח.</p></article></div>
+</div></section>
+<section class="lead-section" id="quote"><div class="container lead-grid">
+<div class="lead-copy"><div class="eyebrow" data-i18n="leadKicker">בואו נבדוק את אפשרויות השילוח</div><h2 data-i18n="leadTitle">המשלוח הבא שלכם מתחיל כאן.</h2><p data-i18n="leadText">מלאו את הפרטים ונחזור אליכם כדי להבין את הצורך ולבדוק פתרונות מול שותפי השילוח שלנו.</p><div class="contact-points"><div>✉　<a href="mailto:yariv4934@gmail.com">yariv4934@gmail.com</a></div><div data-i18n="leadPoint">✓　מענה לפניות עסקיות ולבקשות הצעת מחיר</div></div></div>
+<form class="form" id="leadForm"><h3 data-i18n="formTitle">בקשת הצעת מחיר</h3><p class="hint" data-i18n="formHint">ככל שתספקו יותר פרטים, נוכל להבין טוב יותר את הבקשה.</p>
+<div class="fields">
+<div class="field"><label for="name" data-i18n="fName">שם מלא *</label><input id="name" name="name" required autocomplete="name" placeholder="ישראל ישראלי"></div>
+<div class="field"><label for="company" data-i18n="fCompany">שם העסק</label><input id="company" name="company" autocomplete="organization" placeholder="שם החברה"></div>
+<div class="field"><label for="email" data-i18n="fEmail">דוא״ל *</label><input id="email" name="email" type="email" required autocomplete="email" placeholder="name@company.com"></div>
+<div class="field"><label for="phone" data-i18n="fPhone">טלפון *</label><input id="phone" name="phone" type="tel" required autocomplete="tel" placeholder="050-0000000"></div>
+<div class="field"><label for="origin" data-i18n="fOrigin">מדינת / עיר מוצא *</label><input id="origin" name="origin" required placeholder="למשל: שנגחאי, סין"></div>
+<div class="field"><label for="destination" data-i18n="fDestination">מדינת / עיר יעד *</label><input id="destination" name="destination" required placeholder="למשל: חיפה, ישראל"></div>
+<div class="field"><label for="mode" data-i18n="fMode">סוג שילוח *</label><select id="mode" name="mode" required><option value="" data-i18n="choose">בחרו אפשרות</option><option data-i18n="sea" value="שילוח ימי">שילוח ימי</option><option data-i18n="air" value="שילוח אווירי">שילוח אווירי</option><option data-i18n="road" value="שילוח יבשתי">שילוח יבשתי</option><option data-i18n="unsure" value="לא בטוח / משולב">לא בטוח / משולב</option></select></div>
+<div class="field"><label for="cargo" data-i18n="fCargo">תיאור המטען</label><input id="cargo" name="cargo" placeholder="סוג סחורה, משקל או נפח משוער"></div>
+<div class="field full"><label for="message" data-i18n="fMessage">פרטים נוספים</label><textarea id="message" name="message" placeholder="ספרו לנו על המשלוח, תאריך משוער או דרישות מיוחדות"></textarea></div>
+<div class="field full" style="display:flex;gap:9px;align-items:flex-start"><input id="consent" type="checkbox" required style="width:auto;margin-top:5px"><label for="consent" style="font-weight:500" data-i18n="consent">אני מסכים/ה שיחזרו אליי בקשר לבקשה שלי ושפרטיי ישמשו לטיפול בפנייה.</label></div>
+</div><button class="btn btn-primary" type="submit" data-i18n="submit">שליחת בקשה במייל ←</button><p class="form-note" data-i18n="formNote">בלחיצה תיפתח תוכנת הדוא״ל שלכם עם פרטי הבקשה. שליחת הטופס אינה מהווה אישור הזמנה או התחייבות למחיר.</p><div class="status" id="formStatus" role="status" aria-live="polite"></div>
+</form>
+</div></section>
+<section class="section soft" id="faq"><div class="container"><div class="section-head"><div class="kicker" data-i18n="faqKicker">שאלות נפוצות</div><h2 data-i18n="faqTitle">כמה דברים שכדאי לדעת</h2></div>
+<div class="faq"><details><summary data-i18n="q1">אילו סוגי שילוח אפשר לבדוק?</summary><p data-i18n="a1">אפשר לפנות בנוגע לשילוח ימי, אווירי, יבשתי ופתרונות משולבים. האפשרויות תלויות במסלול, במטען ובזמינות השותפים.</p></details><details><summary data-i18n="q2">האם אתם חברת שילוח או סוכן?</summary><p data-i18n="a2">Yariv Global משמשת כגורם מקשר לשיווק והפניית בקשות לשותפי שילוח. שירות ההובלה עצמו, ההצעה וההתקשרות יינתנו על ידי ספק השילוח הרלוונטי.</p></details><details><summary data-i18n="q3">האם אפשר לקבל הצעת מחיר לפני התחייבות?</summary><p data-i18n="a3">אפשר להעביר בקשת הצעת מחיר ללא התחייבות להזמנה. המחיר, התנאים והזמינות כפופים להצעה של ספק השילוח.</p></details><details><summary data-i18n="q4">אילו פרטים כדאי להכין?</summary><p data-i18n="a4">מומלץ להכין כתובת מוצא ויעד, סוג הסחורה, משקל, מידות או נפח, אופן האריזה ותאריך משוער למשלוח.</p></details></div></div></section>
+</main>
+<footer><div class="container"><div class="footer-grid"><div><a class="brand footer-brand" href="#"><span class="brandmark">YG</span><span>YARIV GLOBAL</span></a><p data-i18n="footerDesc">מחברים עסקים לפתרונות שילוח בינלאומי באמצעות שותפי שילוח מקצועיים. פנו אלינו לבדיקת אפשרויות שילוח לעסק שלכם.</p></div><div><div class="footer-title" data-i18n="footerServices">שירותים</div><div class="footer-links"><a href="#services" data-i18n="seaTitle">שילוח ימי</a><a href="#services" data-i18n="airTitle">שילוח אווירי</a><a href="#services" data-i18n="roadTitle">שילוח יבשתי</a><a href="#services" data-i18n="importTitle">יבוא ויצוא</a></div></div><div><div class="footer-title" data-i18n="footerContact">יצירת קשר</div><div class="footer-links"><a href="mailto:yariv4934@gmail.com">yariv4934@gmail.com</a><a href="#quote" data-i18n="footerQuote">בקשת הצעת מחיר</a></div></div></div><div class="copyright"><span>© <span id="year"></span> Yariv Global. <span data-i18n="rights">כל הזכויות שמורות.</span></span><span data-i18n="disclaimer">השירותים ניתנים על ידי שותפי שילוח חיצוניים, בכפוף להצעתם ולתנאיהם.</span></div></div></footer>
+<a class="whatsapp" id="whatsappLink" href="mailto:yariv4934@gmail.com?subject=Shipping%20inquiry" aria-label="Contact Yariv Global" title="WhatsApp יוגדר לאחר קבלת מספר טלפון">✉ <span data-i18n="contactUs">צרו קשר</span></a>
+<script>
+const translations={
+en:{topline:"International shipping solutions for businesses, importers and exporters",response:"We'd be happy to hear from you",navServices:"Services",navAbout:"Why work with us",navProcess:"How it works",navFaq:"FAQ",navCta:"Get a quote",eyebrow:"Connecting businesses to opportunities worldwide",heroTitle:'Your international shipment,<br><span style="color:#55d5e4">on the right route.</span>',heroText:"Moving goods across borders? We connect importers and exporters with sea, air and road freight options through professional shipping partners, with personal support along the way.",heroCta:'Request a quote <span>→</span>',heroSecondary:"Explore services",trust1:"Multiple shipping options",trust2:"Solutions shaped around your needs",trust3:"One point of contact",floatTitle:"From origin to destination",floatText:"Let's plan a shipment that fits your needs",quick1:"Sea freight",quick1s:"Full and less-than-container loads",quick2:"Air freight",quick2s:"For time-sensitive cargo",quick3:"Road freight",quick3s:"Overland transport options",servicesKicker:"Shipping solutions",servicesTitle:"Shipping options, all in one place",servicesText:"We review your cargo, timeline and destination and connect you with a suitable option through our shipping partners.",seaTitle:"Sea freight",seaText:"Options for full container loads (FCL) and less-than-container loads (LCL), based on cargo and route.",airTitle:"Air freight",airText:"Air cargo options for urgent, sensitive or high-value shipments, subject to carrier availability and terms.",roadTitle:"Road freight",roadText:"Overland and multimodal transport options between countries, subject to route infrastructure and partner availability.",importTitle:"Import & export",importText:"Shipping coordination options for goods moving to and from Israel, based on your business needs.",doorTitle:"Door-to-door",doorText:"Explore collection, transportation and delivery options through suitable providers.",customTitle:"A solution for your needs",customText:"Not sure what fits? Share your shipment details and we'll help review the available options.",learn:"Request a quote →",aboutKicker:"Our approach",aboutTitle:"Shipping starts with understanding your business",aboutText:"We act as a connecting point between businesses and international shipping partners. Our goal is to understand your needs, collect shipment details and help you obtain a relevant offer from a suitable provider.",b1:"A route and cargo fit",b1s:"Review of goods, volume, weight, origin and destination.",b2:"Coordination with shipping partners",b2s:"Connecting your request with relevant providers.",b3:"Personal point of contact",b3s:"One contact to coordinate your inquiry and help with next steps.",aboutCta:"Let's plan your shipment",processKicker:"Easy to get started",processTitle:"How it works",processText:"Four simple steps to explore shipping options.",step1:"Send your details",step1s:"Tell us the origin, destination and cargo details.",step2:"We review your needs",step2s:"We'll contact you if more information is needed.",step3:"Partner matching",step3s:"Your inquiry is shared with a relevant shipping partner for review.",step4:"Receive an offer",step4s:"The shipping provider supplies the quote and service terms.",leadKicker:"Let's explore shipping options",leadTitle:"Your next shipment starts here.",leadText:"Complete the form and we'll get in touch to understand your needs and check options with our shipping partners.",leadPoint:"Business inquiries and quote requests welcome",formTitle:"Request a shipping quote",formHint:"The more details you provide, the better we can understand your request.",fName:"Full name *",fCompany:"Company",fEmail:"Email *",fPhone:"Phone *",fOrigin:"Origin city / country *",fDestination:"Destination city / country *",fMode:"Shipping method *",choose:"Choose an option",sea:"Sea freight",air:"Air freight",road:"Road freight",unsure:"Not sure / combined",fCargo:"Cargo description",fMessage:"Additional details",consent:"I agree to be contacted about my inquiry and for my details to be used to respond to this request.",submit:"Send inquiry by email →",formNote:"Your email app will open with the inquiry details. Submitting this form is not a booking confirmation or price commitment.",faqKicker:"Frequently asked questions",faqTitle:"A few things to know",q1:"Which shipping methods can I ask about?",a1:"You can inquire about sea, air, road and combined freight options. Availability depends on the route, cargo and partner capacity.",q2:"Are you a freight carrier or an agent?",a2:"Yariv Global acts as a marketing and referral point connecting inquiries with shipping partners. The transportation service, quote and service agreement are provided by the relevant shipping provider.",q3:"Can I request a quote without committing?",a3:"You can submit a quote request without committing to a booking. Price, terms and availability are subject to the shipping provider's offer.",q4:"What information should I prepare?",a4:"Prepare origin and destination, cargo type, weight, dimensions or volume, packaging and estimated shipping date.",footerDesc:"Connecting businesses with international shipping options through professional shipping partners. Contact us to explore freight solutions for your business.",footerServices:"Services",footerContact:"Contact",footerQuote:"Request a quote",rights:"All rights reserved.",disclaimer:"Services are provided by external shipping partners, subject to their offers and terms.",contactUs:"Contact us"},
+he:{}
+};
+const original={};
+document.querySelectorAll("[data-i18n]").forEach(el=>{original[el.dataset.i18n]=el.innerHTML});
+let current="he";
+function setLang(lang){current=lang;document.documentElement.lang=lang;document.documentElement.dir=lang==="he"?"rtl":"ltr";document.getElementById("langToggle").textContent=lang==="he"?"EN":"עב";document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;if(lang==="he"){if(original[k]!==undefined)el.innerHTML=original[k]}else if(translations.en[k]!==undefined)el.innerHTML=translations.en[k]});document.getElementById("name").placeholder=lang==="he"?"ישראל ישראלי":"Full name";document.getElementById("company").placeholder=lang==="he"?"שם החברה":"Company name";document.getElementById("origin").placeholder=lang==="he"?"למשל: שנגחאי, סין":"e.g. Shanghai, China";document.getElementById("destination").placeholder=lang==="he"?"למשל: חיפה, ישראל":"e.g. Haifa, Israel";document.getElementById("cargo").placeholder=lang==="he"?"סוג סחורה, משקל או נפח משוער":"Cargo type, estimated weight or volume";document.getElementById("message").placeholder=lang==="he"?"ספרו לנו על המשלוח, תאריך משוער או דרישות מיוחדות":"Tell us about the shipment, timing or special requirements"}
+document.getElementById("langToggle").addEventListener("click",()=>setLang(current==="he"?"en":"he"));
+document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("leadForm").addEventListener("submit",e=>{e.preventDefault();const f=new FormData(e.currentTarget);const labels=current==="he"?{name:"שם",company:"עסק",email:"דוא״ל",phone:"טלפון",origin:"מוצא",destination:"יעד",mode:"סוג שילוח",cargo:"מטען",message:"פרטים נוספים"}:{name:"Name",company:"Company",email:"Email",phone:"Phone",origin:"Origin",destination:"Destination",mode:"Shipping method",cargo:"Cargo",message:"Additional details"};let lines=[];for(const [key,label] of Object.entries(labels)){const v=(f.get(key)||"").toString().trim();if(v)lines.push(label+": "+v)}const subject=encodeURIComponent(current==="he"?"בקשת הצעת מחיר לשילוח בינלאומי":"International shipping quote request");const body=encodeURIComponent(lines.join("\n"));document.getElementById("formStatus").textContent=current==="he"?"נפתחת תוכנת הדוא״ל עם פרטי הבקשה. יש ללחוץ על שליחה כדי להעביר אותה.":"Your email app is opening with the inquiry. Press Send to submit it.";window.location.href="mailto:yariv4934@gmail.com?subject="+subject+"&body="+body});
+</script>
+</body></html>
